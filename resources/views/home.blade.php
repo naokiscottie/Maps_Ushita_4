@@ -175,7 +175,6 @@
         </div>
 
         <div class="page_left">
-
             {{--  選択された場所  --}}
             <div id="select_information" style="display:none;">
                 <h6>地点情報</h6>
@@ -252,6 +251,9 @@
     let map;
     let latitude_data;
     let longitude_data;
+
+    const select_sheet = @json($select_sheet);
+    console.log(select_sheet);
 
     const $select_place = document.getElementById('select_place');
     const $select_url = document.getElementById('select_url');
@@ -402,12 +404,14 @@
                     $select_information_data.innerText = 'なし';
                 }
                 if(sites[index].sheet_A != null){
-                    $select_sheet_A.innerHTML = '<a href=' + sites[index].sheet_A + " target='_blank'>シートA</a>";
+                    //$select_sheet_A.innerHTML = '<a href=' + sites[index].sheet_A + " target='_blank'>シートA</a>";
+                    $select_sheet_A.innerHTML = "<a href='' onclick='sheet_A(" + index + "); return false;'>シートA</a>";
                 }else{
                     $select_sheet_A.innerText = 'なし';
                 }
                 if(sites[index].sheet_B != null){
-                    $select_sheet_B.innerHTML = '<a href=' + sites[index].sheet_B + " target='_blank'>シートB</a>";
+                    //$select_sheet_B.innerHTML = '<a href=' + sites[index].sheet_B + " target='_blank'>シートB</a>";
+                    $select_sheet_B.innerHTML = "<a href='' onclick='sheet_B(" + index + "); return false;'>シートB</a>";
                 }else{
                     $select_sheet_B.innerText = 'なし';
                 }
@@ -507,7 +511,32 @@
         degree = degree + 180;
         document.getElementById('map_area').style.transform = 'rotate('+ degree +'deg)';
     }
-    //追記終了
+
+    const sheet_A = (index) =>{
+
+        if(select_sheet == 0 || select_sheet == 1){
+            //location.href = sites[index].sheet_A;
+            //別タブで開く場合は下記の記述
+            const url = sites[index].sheet_A;
+            window.open(url, '_blank');
+        }else{
+            alert('今月使用の区域ではありません。');
+        }
+
+    }
+
+    const sheet_B = (index) =>{
+
+        if(select_sheet == 0 || select_sheet == 2){
+            //location.href = sites[index].sheet_B;
+            //別タブで開く場合は下記の記述
+            const url = sites[index].sheet_B;
+            window.open(url, '_blank');
+        }else{
+            alert('今月使用の区域ではありません。');
+        }
+
+    }
 
 </script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfCsX2x-eclb4GzEeVa1gJDOPD-SlWZeA&callback=initMap"></script>

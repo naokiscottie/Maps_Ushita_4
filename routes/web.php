@@ -32,4 +32,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/map_update/{id}', [MapController::class, 'map_update']);
     Route::post('/map_update_registration', [MapController::class, 'map_update_registration']);
 
+    Route::post('/sheet_setting', [MapController::class, 'sheet_setting']);
+    
 });

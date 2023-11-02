@@ -10,7 +10,7 @@ class MapModel extends Model
     use HasFactory;
 
     protected $table = 'map_datas';
-
+    
     protected $fillable = [
 		'latitude',
 		'longitude',

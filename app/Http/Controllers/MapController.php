@@ -4,13 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PlaceRequest;
 use App\Models\MapModel;
+use App\Models\Setting;
+use Auth;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Ramsey\Uuid\Type\Integer;
 
 class MapController extends Controller
 {
     public function map(){
+
+        $id = Auth::id();
+        $sheet = Setting::where('user', '=', $id)->first();
+        $select_sheet = $sheet['sheet'];
 
         $sites=[];
         $datas = MapModel::all();
@@ -29,11 +36,11 @@ class MapController extends Controller
             ));
         }
 
-        return view('map_index',['sites' => $sites],['datas' => $datas]);
+        return view('map_index',['sites' => $sites],['datas' => $datas])->with(['select_sheet' => $select_sheet]);
     }
 
     public function map_registration(PlaceRequest $request){
-        //dd($request);
+
         DB::beginTransaction();
         try{
             MapModel::create([
@@ -52,7 +59,7 @@ class MapController extends Controller
             abort(500);
         }
 
-        return redirect('/index')->with('status', '登録 が完了しました');;
+        return redirect('/index')->with('status', '登録が完了しました');;
     }
 
     public function map_delete($id){
@@ -85,6 +92,14 @@ class MapController extends Controller
     }
 
     public function map_update_registration(Request $request){
+
+        $validated = $request->validate([
+            'id' => 'required',
+            'data_latitude' => 'required',
+            'data_longitude' => 'required',
+            'place_name' => 'required',
+        ]);
+
         $inputs = $request->all();
         DB::beginTransaction();
         try{
@@ -110,5 +125,26 @@ class MapController extends Controller
         return redirect('/index')->with('status', '更新処理が完了しました');;
     }
 
+    public function sheet_setting(Request $request){
+
+        $id = Auth::id();
+        $input = $request->all();
+        $sheet = Setting::where('user', '=', $id)->first();
+
+        DB::beginTransaction();
+        try{
+            $sheet->fill([
+                'sheet' => $input['sheet'],
+                'user' => $id,
+            ]);
+            $sheet->save();
+            DB::commit();
+        }catch(\Throwable $e){
+            DB::rollback();
+            abort(500);
+        }
+
+        return redirect('/index');
+    }
 
 }

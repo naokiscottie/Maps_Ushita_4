@@ -122,8 +122,20 @@
                 <button onclick="set_location()" class="btn btn-primary">現在地</button>
                 <button onclick="location.href='/home'" class="btn btn-success">home</button>
             </div>
-
             <br />
+            <div>
+                <p style="padding: 2px;">sheet：
+                    <select class="form-select form-select-sm" style="width:50%; margin-top:2px;" name="sheet" form="sheet_form">
+                        <option @if($select_sheet == 0) selected @endif value="0">default</option>
+                        <option @if($select_sheet == 1) selected @endif value="1">sheet_A</option>
+                        <option @if($select_sheet == 2) selected @endif value="2">sheet_B</option>
+                    </select>
+                </p>
+                <form method="post" action="/sheet_setting" id="sheet_form">
+                @csrf
+                    <p><input class="btn btn-success btn-sm" style="margin-left: 5px;" type="submit" value="設定"></p>
+                </form>
+            </div>
 
             {{--  選択された場所  --}}
             <div id="select_information" style="display:none;">
@@ -309,38 +321,38 @@
         icon_nomal = '';
 
         let icon_circle_1 = {
-            fillColor: 'red',                //塗り潰し色
+            fillColor: 'orange',                //塗り潰し色
             fillOpacity: 0.7,                    //塗り潰し透過率
             path: google.maps.SymbolPath.CIRCLE, //円を指定
             scale: 10,                           //円のサイズ
-            strokeColor: 'red',              //枠の色
+            strokeColor: 'orange',              //枠の色
             strokeWeight: 0.6,                   //枠の透過率
         };
 
         let icon_circle_2 = {
-            fillColor: 'blue',                //塗り潰し色
-            fillOpacity: 0.7,                    //塗り潰し透過率
-            path: google.maps.SymbolPath.CIRCLE, //円を指定
-            scale: 10,                           //円のサイズ
-            strokeColor: 'blue',              //枠の色
-            strokeWeight: 0.6,                   //枠の透過率
-        };
-
-        let icon_circle_3 = {
             fillColor: 'green',                //塗り潰し色
-            fillOpacity: 0.6,                    //塗り潰し透過率
+            fillOpacity: 0.7,                    //塗り潰し透過率
             path: google.maps.SymbolPath.CIRCLE, //円を指定
             scale: 10,                           //円のサイズ
             strokeColor: 'green',              //枠の色
             strokeWeight: 0.6,                   //枠の透過率
         };
 
-        let icon_circle_4 = {
-            fillColor: 'orange',                //塗り潰し色
+        let icon_circle_3 = {
+            fillColor: 'blue',                //塗り潰し色
             fillOpacity: 0.6,                    //塗り潰し透過率
             path: google.maps.SymbolPath.CIRCLE, //円を指定
             scale: 10,                           //円のサイズ
-            strokeColor: 'orange',              //枠の色
+            strokeColor: 'blue',              //枠の色
+            strokeWeight: 0.6,                   //枠の透過率
+        };
+
+        let icon_circle_4 = {
+            fillColor: 'red',                //塗り潰し色
+            fillOpacity: 0.6,                    //塗り潰し透過率
+            path: google.maps.SymbolPath.CIRCLE, //円を指定
+            scale: 10,                           //円のサイズ
+            strokeColor: 'red',              //枠の色
             strokeWeight: 0.6,                   //枠の透過率
         };
 
